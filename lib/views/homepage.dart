@@ -1,10 +1,15 @@
 import 'package:appwrite/models.dart';
 import 'package:event_management_app/auth.dart';
 import 'package:event_management_app/constants/colors.dart';
+import 'package:event_management_app/containers/event_container.dart';
+
 import 'package:event_management_app/database.dart';
 import 'package:event_management_app/saved_data.dart';
+
 import 'package:event_management_app/views/create_event_page.dart';
+import 'package:event_management_app/views/event_details.dart';
 import 'package:event_management_app/views/login.dart';
+
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,7 +24,7 @@ class _HomepageState extends State<Homepage> {
   List<Document> events = [];
   @override
   void initState() {
-    userName = SavedData.getUserName();
+    userName = SavedData.getUserName().split(" ")[0];
     refresh();
     super.initState();
   }
@@ -54,32 +59,30 @@ class _HomepageState extends State<Homepage> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Text(
-              "Hi ${userName} 👋",
-              style: TextStyle(
-                  color: kLightGreen,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w600),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hi ${userName} 👋",
+                    style: TextStyle(
+                        color: kLightGreen,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text("Expore event around you",
+                      style: TextStyle(
+                          color: kLightGreen,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600))
+                ],
+              ),
             ),
           ),
           SliverList(
               delegate: SliverChildBuilderDelegate(
-                  (context, index) => ListTile(
-                        leading: Text(
-                          "${index + 1}",
-                          style: TextStyle(color: kLightGreen, fontSize: 20),
-                        ),
-                        title: Text(
-                          events[index].data["name"],
-                          style: TextStyle(color: kLightGreen, fontSize: 20),
-                        ),
-                        subtitle: Text(
-                          events[index].data["location"],
-                          style: TextStyle(
-                            color: kLightGreen,
-                          ),
-                        ),
-                      ),
+                  (context, index) => EventContainer(data: events[index]),
                   childCount: events.length))
         ],
       ),
