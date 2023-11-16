@@ -31,7 +31,9 @@ Future getUserData() async {
     final data = await databases.listDocuments(
         databaseId: databaseId,
         collectionId: "64b62c75bf3910dd4925",
-        queries: [Query.equal("userId", id)]);
+        queries: [
+          Query.equal("userId", id),
+        ]);
 
     SavedData.saveUserName(data.documents[0].data['name']);
     SavedData.saveUserEmail(data.documents[0].data['email']);
@@ -162,5 +164,41 @@ Future deleteEvent(String docID) async {
     print(response);
   } catch (e) {
     print(e);
+  }
+}
+
+Future getUpcomingEvents() async {
+  try {
+    final now = DateTime.now();
+    final response = await databases.listDocuments(
+      databaseId: databaseId,
+      collectionId: "64bb726399a1320b557f",
+      queries: [
+        Query.greaterThan("datetime", now),
+      ],
+    );
+
+    return response.documents;
+  } catch (e) {
+    print(e);
+    return []; // Handle errors appropriately in your application
+  }
+}
+
+Future getPastEvents() async {
+  try {
+    final now = DateTime.now();
+    final response = await databases.listDocuments(
+      databaseId: databaseId,
+      collectionId: "64bb726399a1320b557f",
+      queries: [
+        Query.lessThan("datetime", now),
+      ],
+    );
+
+    return response.documents;
+  } catch (e) {
+    print(e);
+    return [];
   }
 }

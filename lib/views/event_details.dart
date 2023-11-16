@@ -5,6 +5,7 @@ import 'package:event_management_app/database.dart';
 import 'package:event_management_app/saved_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetails extends StatefulWidget {
   final Document data;
@@ -224,9 +225,12 @@ class _EventDetailsState extends State<EventDetails> {
                   height: 8,
                 ),
                 ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.map),
-                    label: Text("Open with Google Maps")),
+                    onPressed: () {
+                      _launchUrl(
+                          "https://www.google.com/maps/search/?api=1&query=${widget.data.data["location"]}");
+                    },
+                    icon: const Icon(Icons.map),
+                    label: const Text("Open in Google Maps")),
                 SizedBox(
                   height: 8,
                 ),
@@ -289,5 +293,11 @@ class _EventDetailsState extends State<EventDetails> {
         ],
       ),
     );
+  }
+}
+
+Future<void> _launchUrl(String url) async {
+  if (!await launchUrl(Uri.parse(url))) {
+    throw Exception('Could not launch $url');
   }
 }

@@ -41,6 +41,11 @@ class _HomepageState extends State<Homepage> {
       isLoading = false;
       setState(() {});
     });
+    // getPastEvents().then((value) {
+    //   events = value;
+    //   isLoading = false;
+    //   setState(() {});
+    // });
   }
 
   @override

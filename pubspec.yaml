@@ -41,6 +41,7 @@ dependencies:
   file_picker: ^5.3.1
   intl: ^0.18.1
   carousel_slider: ^4.2.1
+  url_launcher: ^6.1.14
 
   
 

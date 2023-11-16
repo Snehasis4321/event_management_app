@@ -90,6 +90,9 @@ class _CreateEventPageState extends State<CreateEventPage>
     });
     try {
       if (_filePickerResult != null) {
+        // Uint8List fileBytes = _filePickerResult!.files.first.bytes!;
+        // String fileName = _filePickerResult!.files.first.name;
+        // final inputFile = InputFile.fromBytes(bytes: fileBytes, filename: fileName);
         PlatformFile file = _filePickerResult!.files.first;
         final fileByes = await File(file.path!).readAsBytes();
         final inputFile =
