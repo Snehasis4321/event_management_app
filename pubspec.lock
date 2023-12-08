@@ -141,10 +141,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: b1729fc96627dd44012d0a901558177418818d6bd428df59dcfeb594e5f66432
+      sha256: "4e42aacde3b993c5947467ab640882c56947d9d27342a5b6f2895b23956954a6"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.2"
+    version: "6.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -224,6 +224,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image_picker_web:
+    dependency: "direct main"
+    description:
+      name: image_picker_web
+      sha256: e1656f1ce48a614aefdf22ab73c0cc7e498fa7b78893ffdcc83171e7289092e0
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
   intl:
     dependency: "direct main"
     description:

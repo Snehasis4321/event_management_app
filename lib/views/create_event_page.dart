@@ -9,6 +9,7 @@ import 'package:event_management_app/saved_data.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../auth.dart';
 
@@ -24,6 +25,7 @@ class _CreateEventPageState extends State<CreateEventPage>
   late AnimationController _controller;
 
   FilePickerResult? _filePickerResult;
+  Uint8List? _webImagePickerResult;
   bool _isInPersonEvent = true;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
@@ -76,7 +78,8 @@ class _CreateEventPageState extends State<CreateEventPage>
   }
 
   void _openFilePicker() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
     setState(() {
       _filePickerResult = result;
     });
@@ -89,10 +92,7 @@ class _CreateEventPageState extends State<CreateEventPage>
       isUploading = true;
     });
     try {
-      if (_filePickerResult != null) {
-        // Uint8List fileBytes = _filePickerResult!.files.first.bytes!;
-        // String fileName = _filePickerResult!.files.first.name;
-        // final inputFile = InputFile.fromBytes(bytes: fileBytes, filename: fileName);
+      if (_filePickerResult != null && _filePickerResult!.files.isNotEmpty) {
         PlatformFile file = _filePickerResult!.files.first;
         final fileByes = await File(file.path!).readAsBytes();
         final inputFile =
@@ -116,6 +116,37 @@ class _CreateEventPageState extends State<CreateEventPage>
     }
   }
 
+// image picker for web platform
+  void pickImageForWeb() async {
+    Uint8List? bytesFromPicker = await ImagePickerWeb.getImageAsBytes();
+    if (bytesFromPicker != null) {
+      setState(() {
+        _webImagePickerResult = bytesFromPicker;
+      });
+    }
+  }
+  // upload image for web platform
+
+  Future uploadImageWeb() async {
+    try {
+      if (_webImagePickerResult != null) {
+        final inputFile = InputFile.fromBytes(
+            bytes: _webImagePickerResult!, filename: "event_image.jpg");
+
+        final response = await storage.createFile(
+            bucketId: '64bcdd3ad336eaa231f0',
+            fileId: ID.unique(),
+            file: inputFile);
+        print(response.$id);
+        return response.$id;
+      } else {
+        print("Something went wrong");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +163,13 @@ class _CreateEventPageState extends State<CreateEventPage>
               height: 25,
             ),
             GestureDetector(
-              onTap: () => _openFilePicker(),
+              onTap: () {
+                if (kIsWeb) {
+                  pickImageForWeb();
+                } else {
+                  _openFilePicker();
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .3,
@@ -147,24 +184,32 @@ class _CreateEventPageState extends State<CreateEventPage>
                           fit: BoxFit.fill,
                         ),
                       )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            Icon(
-                              Icons.add_a_photo_outlined,
-                              size: 42,
-                              color: Colors.black,
+                    : _webImagePickerResult != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.memory(
+                              _webImagePickerResult!,
+                              fit: BoxFit.fill,
                             ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              "Add Event Image",
-                              style: TextStyle(
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                                Icon(
+                                  Icons.add_a_photo_outlined,
+                                  size: 42,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ]),
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  "Add Event Image",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ]),
               ),
             ),
             SizedBox(
@@ -257,22 +302,41 @@ class _CreateEventPageState extends State<CreateEventPage>
                         content: Text(
                             "Event Name,Description,Location,Date & time are must.")));
                   } else {
-                    uploadEventImage()
-                        .then((value) => createEvent(
-                            _nameController.text,
-                            _descController.text,
-                            value,
-                            _locationController.text,
-                            _dateTimeController.text,
-                            userId,
-                            _isInPersonEvent,
-                            _guestController.text,
-                            _sponsersController.text))
-                        .then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Event Created !!")));
-                      Navigator.pop(context);
-                    });
+                    if (kIsWeb) {
+                      uploadImageWeb()
+                          .then((value) => createEvent(
+                              _nameController.text,
+                              _descController.text,
+                              value,
+                              _locationController.text,
+                              _dateTimeController.text,
+                              userId,
+                              _isInPersonEvent,
+                              _guestController.text,
+                              _sponsersController.text))
+                          .then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Event Created !!")));
+                        Navigator.pop(context);
+                      });
+                    } else {
+                      uploadEventImage()
+                          .then((value) => createEvent(
+                              _nameController.text,
+                              _descController.text,
+                              value,
+                              _locationController.text,
+                              _dateTimeController.text,
+                              userId,
+                              _isInPersonEvent,
+                              _guestController.text,
+                              _sponsersController.text))
+                          .then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Event Created !!")));
+                        Navigator.pop(context);
+                      });
+                    }
                   }
                 },
                 child: Text(

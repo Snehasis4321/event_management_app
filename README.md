@@ -1,16 +1,26 @@
-# event_management_app
+# Event Management App
 
-A new Flutter project.
+### 🛠 Update -
+There was an issue with flutter web the image is not uploading with file picker.
+This was the error
+```
+On web `path` is always `null`,
+You should access `bytes` property instead.
+```
 
-## Getting Started
+ For that reason we have done some modifications in the code.
 
-This project is a starting point for a Flutter application.
+For web platform instead of `file_picker` we are using now `image_picker_web` to upload the event image. Some modifactions are made in the code `create_event_page.dart` please update your code. This was not included in the video. 
 
-A few resources to get you started if this is your first Flutter project:
+### 👨‍💻 Technologies Used :
+- Flutter
+- Appwrite Cloud
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 📽 Video Links - 
+- [Event Management App using Flutter & Appwrite | Login & Signup | Part 1](https://youtu.be/uOWeCc_e1RY)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Event Management App using Flutter & Appwrite | Create + Read Events & Upload Images | Part 2](https://youtu.be/se4XMGSASJY)
+
+- [Event Management App using Flutter & Appwrite |Participate in Events (Update) & Read Images | Part 3](https://youtu.be/QRV8BXMN4xE)
+
+- [Event Management App using Flutter & Appwrite | Edit & Delete Events | Part 4](https://youtu.be/cfA7lHKEL1Y)
