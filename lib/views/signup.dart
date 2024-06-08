@@ -2,7 +2,6 @@ import 'package:event_management_app/auth.dart';
 import 'package:event_management_app/constants/colors.dart';
 import 'package:event_management_app/containers/custom_input_form.dart';
 import 'package:event_management_app/views/login.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {

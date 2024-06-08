@@ -324,7 +324,7 @@ class _CreateEventPageState extends State<CreateEventPage>
                           .then((value) => createEvent(
                               _nameController.text,
                               _descController.text,
-                              value,
+                              value??"66629e1a0000e9198561",
                               _locationController.text,
                               _dateTimeController.text,
                               userId,

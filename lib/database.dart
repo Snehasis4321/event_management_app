@@ -27,6 +27,7 @@ Future<void> saveUserData(String name, String email, String userId) async {
 
 Future getUserData() async {
   final id = SavedData.getUserId();
+  print(id);
   try {
     final data = await databases.listDocuments(
         databaseId: databaseId,
@@ -37,8 +38,15 @@ Future getUserData() async {
 
     SavedData.saveUserName(data.documents[0].data['name']);
     SavedData.saveUserEmail(data.documents[0].data['email']);
-    print(data);
+    // this is for organizer update please uncomment if required.
+    print(data.documents[0].data['isOrganizer']);
+    print(data.documents[0].data['isOrganizer'].runtimeType);
+    // add this one 
+    SavedData.saveUserIsOrganized(data.documents[0].data['isOrganizer']??false); 
+
+    print("data is data : $data");
   } catch (e) {
+    print("error on database : $e");
     print(e);
   }
 }

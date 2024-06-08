@@ -1,5 +1,5 @@
 import 'package:event_management_app/constants/colors.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 
 class CustomHeadText extends StatefulWidget {

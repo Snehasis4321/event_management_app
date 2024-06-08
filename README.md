@@ -1,5 +1,11 @@
 # Event Management App
 
+### 👍Note 
+for running on android you need to comment out some part on 
+`create_event.dart` file as it constans part to upload image for web
+so please make sure to do it.
+
+
 ### 🛠 Update -
 There was an issue with flutter web the image is not uploading with file picker.
 This was the error

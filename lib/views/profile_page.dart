@@ -71,7 +71,8 @@ class _ProfileState extends State<Profile> {
                       style: TextStyle(color: kLightGreen),
                     ),
                   ),
-                  ListTile(
+          //  SavedData.getUserIsOrganized()==true?       
+           ListTile(
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -80,7 +81,9 @@ class _ProfileState extends State<Profile> {
                       "Manage Events",
                       style: TextStyle(color: kLightGreen),
                     ),
-                  ),
+                  )
+                  // : Container(),
+                  ,
                   ListTile(
                     onTap: () {
                       logoutUser();

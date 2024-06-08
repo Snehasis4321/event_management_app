@@ -38,6 +38,7 @@ Future loginUser(String email, String password) async {
 // Logout the user
 Future logoutUser() async {
   await account.deleteSession(sessionId: 'current');
+  await SavedData.clearSavedData();
 }
 
 // check if user have an active session or not

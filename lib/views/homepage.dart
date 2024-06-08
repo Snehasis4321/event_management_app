@@ -31,6 +31,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     userName = SavedData.getUserName().split(" ")[0];
+  // print(SavedData.getUserIsOrganized());
     refresh();
     super.initState();
   }
@@ -41,6 +42,12 @@ class _HomepageState extends State<Homepage> {
       isLoading = false;
       setState(() {});
     });
+
+    // getUpcomingEvents().then((value) {
+    //   events = value;
+    //   isLoading = false;
+    //   setState(() {});
+    // });
     // getPastEvents().then((value) {
     //   events = value;
     //   isLoading = false;
@@ -162,7 +169,9 @@ class _HomepageState extends State<Homepage> {
                   childCount: events.length)),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+      // SavedData.getUserIsOrganized() ==true?
+       FloatingActionButton(
         onPressed: () async {
           await Navigator.push(context,
               MaterialPageRoute(builder: (context) => CreateEventPage()));
@@ -173,7 +182,8 @@ class _HomepageState extends State<Homepage> {
           color: Colors.black,
         ),
         backgroundColor: kLightGreen,
-      ),
+      )
+      // :null,
     );
   }
 }
